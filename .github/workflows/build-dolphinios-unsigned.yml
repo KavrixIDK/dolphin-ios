@@ -49,7 +49,11 @@ jobs:
       - name: Instalar herramientas de build
         run: |
           brew install cmake ninja bartycrouch
-          /usr/bin/python3 -m pip install --break-system-packages polib
+          # Upgrade pip on the macOS-provided Python to ensure newer pip accepts
+          # flags and installs packages correctly. This avoids the "no such option:
+          # --break-system-packages" error observed in the runner.
+          /usr/bin/python3 -m pip install --upgrade pip
+          /usr/bin/python3 -m pip install polib
 
       - name: Compilar (Non-Jailbroken + TrollStore)
         run: |
