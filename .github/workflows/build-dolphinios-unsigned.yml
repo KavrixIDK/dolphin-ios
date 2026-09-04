@@ -44,7 +44,7 @@ jobs:
       - name: Fijar versión de Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: "15.4"
+          xcode-version: "16"
 
       - name: Instalar herramientas de build
         run: |
