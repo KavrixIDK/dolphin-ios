@@ -20,6 +20,13 @@
 #import "FoundationStringUtil.h"
 #import "LocalizationUtil.h"
 
+// Tags used to find the switch/text view inside their prototype cells at
+// dequeue time. Storyboard outlets can't reach into prototype cell
+// subviews (they don't exist until the cell is dequeued), so this is the
+// only way to hand them data from the view controller.
+static const NSInteger kEnableSwitchTag = 100;
+static const NSInteger kDescriptionTextViewTag = 101;
+
 namespace
 {
 struct DsuServerEntry
@@ -29,10 +36,6 @@ struct DsuServerEntry
   u16 port;
 };
 
-// Mirrors ciface::DualShockUDPClient::InputBackend::ConfigChanged and
-// DualShockUDPClientWidget::RefreshServerList: entries are stored as
-// "description:address:port;" and old single-server settings (kept only
-// for backwards compatibility) are folded into the new list on first read.
 std::vector<DsuServerEntry> LoadDsuServers()
 {
   const auto legacy_address = Config::Get(ciface::DualShockUDPClient::Settings::SERVER_ADDRESS);
@@ -89,6 +92,8 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
 
 @implementation ControllersDsuClientViewController {
   std::vector<DsuServerEntry> _servers;
+  BOOL _enabled;
+  NSAttributedString* _cachedDescription;
 }
 
 - (void)viewDidLoad {
@@ -109,27 +114,16 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
     NSCharacterEncodingDocumentAttribute : @(NSUTF8StringEncoding)
   };
 
-  NSAttributedString* attributedDescription =
+  self->_cachedDescription =
       [[NSAttributedString alloc] initWithData:htmlData options:options
                              documentAttributes:nil error:nil];
-
-  if (attributedDescription != nil) {
-    self.descriptionTextView.attributedText = attributedDescription;
-  } else {
-    // Fall back to plain text if, for whatever reason, the HTML failed to parse.
-    self.descriptionTextView.text = htmlDescription;
-  }
-
-  self.descriptionTextView.font = [UIFont systemFontOfSize:15];
-  self.descriptionTextView.textColor = [UIColor secondaryLabelColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 
   self->_servers = LoadDsuServers();
-
-  self.enabledSwitch.on = Config::Get(ciface::DualShockUDPClient::Settings::SERVERS_ENABLED);
+  self->_enabled = Config::Get(ciface::DualShockUDPClient::Settings::SERVERS_ENABLED);
 
   [self.tableView reloadData];
 }
@@ -153,14 +147,21 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
   if (indexPath.section == 0) {
-    return [tableView dequeueReusableCellWithIdentifier:@"enableCell" forIndexPath:indexPath];
+    UITableViewCell* enableCell = [tableView dequeueReusableCellWithIdentifier:@"enableCell" forIndexPath:indexPath];
+
+    UISwitch* toggle = [enableCell.contentView viewWithTag:kEnableSwitchTag];
+    toggle.on = self->_enabled;
+    [toggle removeTarget:self action:@selector(enabledSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+    [toggle addTarget:self action:@selector(enabledSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+
+    return enableCell;
   }
 
   if (indexPath.section == 1) {
     if ((NSUInteger)indexPath.row == self->_servers.size()) {
       UITableViewCell* addCell = [tableView dequeueReusableCellWithIdentifier:@"addCell" forIndexPath:indexPath];
-      addCell.userInteractionEnabled = self.enabledSwitch.on;
-      addCell.textLabel.alpha = self.enabledSwitch.on ? 1.0 : 0.5;
+      addCell.userInteractionEnabled = self->_enabled;
+      addCell.textLabel.alpha = self->_enabled ? 1.0 : 0.5;
       return addCell;
     }
 
@@ -171,12 +172,18 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
                                                              CppToFoundationString(server.address),
                                                              @(server.port),
                                                              CppToFoundationString(server.description)];
-    serverCell.nameLabel.alpha = self.enabledSwitch.on ? 1.0 : 0.5;
+    serverCell.nameLabel.alpha = self->_enabled ? 1.0 : 0.5;
 
     return serverCell;
   }
 
-  return [tableView dequeueReusableCellWithIdentifier:@"descriptionCell" forIndexPath:indexPath];
+  UITableViewCell* descriptionCell = [tableView dequeueReusableCellWithIdentifier:@"descriptionCell" forIndexPath:indexPath];
+  UITextView* textView = [descriptionCell.contentView viewWithTag:kDescriptionTextViewTag];
+  textView.attributedText = self->_cachedDescription;
+  textView.font = [UIFont systemFontOfSize:15];
+  textView.textColor = [UIColor secondaryLabelColor];
+
+  return descriptionCell;
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
@@ -186,7 +193,7 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
     return;
   }
 
-  if (!self.enabledSwitch.on) {
+  if (!self->_enabled) {
     return;
   }
 
@@ -198,7 +205,7 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
     return false;
   }
 
-  return self.enabledSwitch.on;
+  return self->_enabled;
 }
 
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath {
@@ -215,10 +222,9 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
 #pragma mark - Actions
 
 - (IBAction)enabledSwitchChanged:(id)sender {
-  Config::SetBaseOrCurrent(ciface::DualShockUDPClient::Settings::SERVERS_ENABLED, (bool)self.enabledSwitch.on);
+  self->_enabled = ((UISwitch*)sender).on;
+  Config::SetBaseOrCurrent(ciface::DualShockUDPClient::Settings::SERVERS_ENABLED, (bool)self->_enabled);
 
-  // Section 1 needs to redraw: the server rows and the "Add..." row both
-  // reflect the enabled state (dimmed + non-interactive when disabled).
   [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
@@ -234,9 +240,9 @@ void SaveDsuServers(const std::vector<DsuServerEntry>& servers)
 #pragma mark - ControllersAddDsuServerViewControllerDelegate
 
 - (void)addDsuServerViewController:(ControllersAddDsuServerViewController*)viewController
-                 didAddServerWithDescription:(NSString*)description
-                                      address:(NSString*)address
-                                         port:(uint16_t)port {
+       didAddServerWithDescription:(NSString*)description
+                            address:(NSString*)address
+                               port:(uint16_t)port {
   self->_servers.push_back({FoundationToCppString(description), FoundationToCppString(address), port});
   SaveDsuServers(self->_servers);
 

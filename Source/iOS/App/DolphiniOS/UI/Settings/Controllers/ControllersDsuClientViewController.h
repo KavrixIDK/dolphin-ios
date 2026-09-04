@@ -7,9 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ControllersDsuClientViewController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UISwitch* enabledSwitch;
-@property (weak, nonatomic) IBOutlet UITextView* descriptionTextView;
-
 - (IBAction)enabledSwitchChanged:(id)sender;
 
 @end
