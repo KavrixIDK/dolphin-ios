@@ -24,6 +24,7 @@ jobs:
         DOL_BUILD_SOURCE="development"
         CODE_SIGNING_ALLOWED="NO"
         CODE_SIGNING_REQUIRED="NO"
+        ASSETCATALOG_COMPILER_APPICON_NAME="AppIcon"
 
     steps:
       - name: Checkout (con submódulos)
@@ -31,7 +32,7 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Ver Xcodes disponibles en este runner
+      - name: DEBUG - Xcodes disponibles
         run: ls /Applications | grep Xcode
 
       - name: Fijar versión de Xcode
@@ -39,9 +40,8 @@ jobs:
         with:
           xcode-version: "16"
 
-      - name: Debug AppIcon (assets reales en el checkout)
-        run: |
-          find "${{ github.workspace }}/Source/iOS/App" -iname "*AppIcon*"
+      - name: DEBUG - buscar AppIcon en el repo
+        run: find "${{ github.workspace }}/Source/iOS/App" -iname "*AppIcon*"
 
       - name: Instalar herramientas de build
         run: |
