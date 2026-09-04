@@ -177,6 +177,9 @@
 		B9DC5FB92884CB7C004BD94A /* GraphicsChoiceCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9DC5FB82884CB7C004BD94A /* GraphicsChoiceCell.mm */; };
 		B9EC1A43295FFFD30013EBE4 /* SoftwareListiOSViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EC1A42295FFFD30013EBE4 /* SoftwareListiOSViewController.mm */; };
 		B9EC28382D21D429000FAE09 /* ControllersTouchscreenViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EC28372D21D429000FAE09 /* ControllersTouchscreenViewController.mm */; };
+		3BBF618CA840498F8F50ED90 /* ControllersDsuClientViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAFDC622604D45748FCE8BEC /* ControllersDsuClientViewController.mm */; };
+		A0F9963DC4134C41A86D2B2C /* DsuServerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1848E12F123F4654B6BADE46 /* DsuServerCell.m */; };
+		65513BE63337449C850F2855 /* ControllersAddDsuServerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 980815DBE7364F65BA86938D /* ControllersAddDsuServerViewController.mm */; };
 		B9EC283A2D21DA56000FAE09 /* TCWiiTouchIRMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EC28392D21DA56000FAE09 /* TCWiiTouchIRMode.swift */; };
 		B9EC283D2D21DE2F000FAE09 /* ControllersTouchscreenIRModeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EC283C2D21DE2F000FAE09 /* ControllersTouchscreenIRModeViewController.mm */; };
 		B9EFF8532E7F56790029F016 /* AppIcon_Glass.icon in Resources */ = {isa = PBXBuildFile; fileRef = B9EFF8522E7F56790029F016 /* AppIcon_Glass.icon */; };
@@ -548,6 +551,13 @@
 		B9EC1A42295FFFD30013EBE4 /* SoftwareListiOSViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SoftwareListiOSViewController.mm; sourceTree = "<group>"; };
 		B9EC28362D21D429000FAE09 /* ControllersTouchscreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllersTouchscreenViewController.h; sourceTree = "<group>"; };
 		B9EC28372D21D429000FAE09 /* ControllersTouchscreenViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ControllersTouchscreenViewController.mm; sourceTree = "<group>"; };
+		2DD7CC78947C4B2DA3D7C821 /* ControllersDsuClientViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllersDsuClientViewController.h; sourceTree = "<group>"; };
+		FAFDC622604D45748FCE8BEC /* ControllersDsuClientViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ControllersDsuClientViewController.mm; sourceTree = "<group>"; };
+		F5C2A028717B462C802A7918 /* DsuServerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DsuServerCell.h; sourceTree = "<group>"; };
+		1848E12F123F4654B6BADE46 /* DsuServerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DsuServerCell.m; sourceTree = "<group>"; };
+		1F1B80488A0341C6BE4269F2 /* ControllersAddDsuServerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllersAddDsuServerViewController.h; sourceTree = "<group>"; };
+		980815DBE7364F65BA86938D /* ControllersAddDsuServerViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ControllersAddDsuServerViewController.mm; sourceTree = "<group>"; };
+		9B478C62AF124710A06B1FEB /* ControllersAddDsuServerViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllersAddDsuServerViewControllerDelegate.h; sourceTree = "<group>"; };
 		B9EC28392D21DA56000FAE09 /* TCWiiTouchIRMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCWiiTouchIRMode.swift; sourceTree = "<group>"; };
 		B9EC283B2D21DE2F000FAE09 /* ControllersTouchscreenIRModeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllersTouchscreenIRModeViewController.h; sourceTree = "<group>"; };
 		B9EC283C2D21DE2F000FAE09 /* ControllersTouchscreenIRModeViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ControllersTouchscreenIRModeViewController.mm; sourceTree = "<group>"; };
@@ -770,6 +780,13 @@
 				B9EC28372D21D429000FAE09 /* ControllersTouchscreenViewController.mm */,
 				B9EC283B2D21DE2F000FAE09 /* ControllersTouchscreenIRModeViewController.h */,
 				B9EC283C2D21DE2F000FAE09 /* ControllersTouchscreenIRModeViewController.mm */,
+				2DD7CC78947C4B2DA3D7C821 /* ControllersDsuClientViewController.h */,
+				FAFDC622604D45748FCE8BEC /* ControllersDsuClientViewController.mm */,
+				F5C2A028717B462C802A7918 /* DsuServerCell.h */,
+				1848E12F123F4654B6BADE46 /* DsuServerCell.m */,
+				1F1B80488A0341C6BE4269F2 /* ControllersAddDsuServerViewController.h */,
+				980815DBE7364F65BA86938D /* ControllersAddDsuServerViewController.mm */,
+				9B478C62AF124710A06B1FEB /* ControllersAddDsuServerViewControllerDelegate.h */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2135,6 +2152,9 @@
 				B9B2C661288E569E00CB6569 /* ExternalDisplayEmulationViewController.mm in Sources */,
 				B950CFA32961696100197719 /* BootNoticeNavigationViewController.m in Sources */,
 				B9EC28382D21D429000FAE09 /* ControllersTouchscreenViewController.mm in Sources */,
+				3BBF618CA840498F8F50ED90 /* ControllersDsuClientViewController.mm in Sources */,
+				A0F9963DC4134C41A86D2B2C /* DsuServerCell.m in Sources */,
+				65513BE63337449C850F2855 /* ControllersAddDsuServerViewController.mm in Sources */,
 				B9B1483C29642CB8002C4BE7 /* UpdateRequiredNoticeViewController.m in Sources */,
 				B900A7B027F2866D000361DD /* UserFolderUtil.swift in Sources */,
 				B974923C2960096C00794509 /* ImportFileManager.m in Sources */,
