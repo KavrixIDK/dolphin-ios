@@ -1,7 +1,5 @@
 name: Build DolphiniOS (unsigned)
 
-# Corre a mano desde la pestaña "Actions" del repo (botón "Run workflow"),
-# y opcionalmente en cada push a tu rama principal.
 on:
   workflow_dispatch:
     inputs:
@@ -14,18 +12,10 @@ on:
 
 jobs:
   build:
-    # macos-15 (Sequoia) con Xcode 16.4: la combinación estable más reciente
-    # disponible en runners hospedados por GitHub al momento de escribir esto.
-    # Si más adelante querés probar con Xcode 26 / macos-26, es tan simple
-    # como cambiar estas dos líneas.
     runs-on: macos-15
 
     env:
-      # xcodebuild toma este identificador de organización directamente por
-      # línea de comandos (bypassea BundleIdentifier.xcconfig, que se puede
-      # dejar con el placeholder por defecto). Cambiá "tu-usuario" por algo
-      # único tuyo si vas a instalar la app vos mismo.
-      DOL_ORG_ID: com.github.KavrixIDK.dolphinios
+      DOL_ORG_ID: com.github.tu-usuario.dolphinios
       XCODE_COMMON_BUILD_ARGS: >-
         -project Source/iOS/App/DolphiniOS.xcodeproj
         -derivedDataPath ${{ github.workspace }}/build-Xcode
@@ -41,28 +31,22 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Ver Xcodes disponibles en este runner
+        run: ls /Applications | grep Xcode
+
       - name: Fijar versión de Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: "16"
 
+      - name: Debug AppIcon (assets reales en el checkout)
+        run: |
+          find "${{ github.workspace }}/Source/iOS/App" -iname "*AppIcon*"
+
       - name: Instalar herramientas de build
         run: |
-          brew install cmake ninja bartycrouch
-          # Upgrade pip on the macOS-provided Python to ensure newer pip accepts
-          # flags and installs packages correctly. This avoids the "no such option:
-          # --break-system-packages" error observed in the runner.
-          /usr/bin/python3 -m pip install --upgrade pip
-          /usr/bin/python3 -m pip install polib
-
-      - name: Limpiar referencia a AppIcon_Glass
-        run: |
-          # Busca y reemplaza referencias a AppIcon_Glass con AppIcon en todo el proyecto
-          find "${{ github.workspace }}/Source/iOS/App" \
-            \( -name "*.pbxproj" -o -name "*.xcconfig" -o -name "*.plist" \) \
-            -exec sed -i '' 's/AppIcon_Glass/AppIcon/g' {} \;
-          
-          echo "✅ Referencias a AppIcon_Glass reemplazadas con AppIcon"
+          brew install cmake ninja bartycrouch python3
+          /opt/homebrew/bin/python3 -m pip install --break-system-packages polib
 
       - name: Compilar (Non-Jailbroken + TrollStore)
         run: |
@@ -97,10 +81,6 @@ jobs:
         run: |
           mkdir -p "${{ github.workspace }}/products"
 
-          # "-" = firma ad-hoc: no requiere ningún certificado ni cuenta de
-          # Apple Developer en el runner. Alcanza para instalar con
-          # TrollStore, y AltStore/Sideloadly vuelven a firmar el IPA con tu
-          # propio Apple ID al instalarlo, así que también sirve para eso.
           "${{ github.workspace }}/Source/iOS/App/Project/Scripts/CreateIpa.sh" \
             "${{ github.workspace }}/archives/NonJailbroken.xcarchive/Products/Applications/DolphiniOS.app" \
             "-" \
