@@ -55,6 +55,15 @@ jobs:
           /usr/bin/python3 -m pip install --upgrade pip
           /usr/bin/python3 -m pip install polib
 
+      - name: Limpiar referencia a AppIcon_Glass
+        run: |
+          # Busca y reemplaza referencias a AppIcon_Glass con AppIcon en todo el proyecto
+          find "${{ github.workspace }}/Source/iOS/App" \
+            \( -name "*.pbxproj" -o -name "*.xcconfig" -o -name "*.plist" \) \
+            -exec sed -i '' 's/AppIcon_Glass/AppIcon/g' {} \;
+          
+          echo "✅ Referencias a AppIcon_Glass reemplazadas con AppIcon"
+
       - name: Compilar (Non-Jailbroken + TrollStore)
         run: |
           rm -rf "${{ github.workspace }}/archives" || true
