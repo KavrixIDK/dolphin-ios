@@ -82,7 +82,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="3FD-oQ-HfY" secondAttribute="bottom" id="j8P-ap-EIp"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections
+                                        <connections>
                                             <outlet property="portLabel" destination="3FD-oQ-HfY" id="uly-Qe-oyH"/>
                                             <outlet property="typeLabel" destination="s1j-8h-JNz" id="FaI-jL-smK"/>
                                         </connections>
@@ -191,7 +191,7 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="0a5-qE-dtf" secondAttribute="trailing" id="u1G-Dk-v8C"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections
+                                        <connections>
                                             <outlet property="portLabel" destination="L9B-1H-TUh" id="tZa-ex-cdF"/>
                                             <outlet property="typeLabel" destination="0a5-qE-dtf" id="Pnm-zM-5LH"/>
                                         </connections>
@@ -226,7 +226,7 @@
                                                 <constraint firstItem="lfC-u8-XC9" firstAttribute="top" secondItem="6Hg-dY-ur7" secondAttribute="topMargin" id="wAy-3p-DE2"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections
+                                        <connections>
                                             <outlet property="portLabel" destination="lfC-u8-XC9" id="S1V-ib-Gfb"/>
                                             <outlet property="typeLabel" destination="yNG-ug-BwA" id="2Iw-Bs-BUn"/>
                                         </connections>
@@ -261,7 +261,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="Puc-EL-eCz" secondAttribute="bottom" id="q7W-Af-cS1"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections
+                                        <connections>
                                             <outlet property="portLabel" destination="Puc-EL-eCz" id="8B7-Wb-fal"/>
                                             <outlet property="typeLabel" destination="Gmv-tf-aDh" id="WSo-Fq-bg0"/>
                                         </connections>
@@ -296,7 +296,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="Rkl-bg-gKd" secondAttribute="bottom" id="lI5-QH-m27"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections
+                                        <connections>
                                             <outlet property="portLabel" destination="Rkl-bg-gKd" id="BWW-3d-3u0"/>
                                             <outlet property="typeLabel" destination="oq6-jD-kt6" id="mfp-TO-iNN"/>
                                         </connections>
